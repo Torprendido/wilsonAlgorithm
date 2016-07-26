@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<!-- javascript_to_javafx.html -->
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>JavaScript to JavaFX</title>
+        <link rel="stylesheet" href="bootstrap-3.3.6-dist/css/bootstrap.css"/>
+        <link rel="stylesheet" href="jquery-ui-1.11.4.custom/jquery-ui.css"/>
+
+        <script src="jquery-ui-1.11.4.custom/external/jquery/jquery.js"></script>
+        <script src="jquery-ui-1.11.4.custom/jquery-ui.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+
+                $("#spinner").spinner({
+                    min: 3,
+                    max: 99,
+                    step: 2
+                });
+
+                $("#spinner").spinner("value", 3);
+
+                $("#wilson").click(function () {
+                    $(".rowsWilson").remove();
+                    var headRow = window.fx.getHeadRow("rowsWilson");
+                    $("#secondary").find('thead').append(headRow);
+                    var k = $("#spinner").spinner("value");
+                    var rows = window.fx.getWilsonRows(k);
+                    $("#secondary").find('tbody').append(rows);
+                    $('#secondary').show('slide', {direction: 'left'}, 500);
+                });
+
+                $("#return").click(function () {
+                    $('#secondary').hide('slide', {direction: 'left'}, 500);
+                });
+
+                $("#charge").click(function () {
+                    var path = window.fx.openFile();
+                    window.fx.print(path);
+                    $("#labelFile").val(path);
+                    if (path.indexOf("/") !== -1 || path.indexOf("\\") !== -1) {
+                        $("#hiden").show();
+                        $(".rows").remove();
+                        var headRow = window.fx.getHeadRow("rows");
+                        $("#main").find('thead').append(headRow);
+                        var rows = window.fx.getRows();
+                        $("#main").find('tbody').append(rows);
+                    }
+                });
+
+                $("#save").click(function () {
+                    window.fx.saveFile();
+                });
+                
+            });
+        </script>
+        <style>
+            #labelFile {
+                width: 70%;
+            }
+
+            #secondary {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                background-color: white;
+                display: none;
+            }
+
+            .head {
+                color: white;
+                background-color: black;
+            }
+
+            .footer {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+                text-align: center;
+                padding: 10px;
+            }
+            
+            .ui-icon.white {
+                background-image: url(jquery-ui-1.11.4.custom/images/ui-icons_ffffff_256x240.png);
+            }
+        </style>
+    </head>
+    <body>
+        <div id="main" style="position: fixed; width: 100%; height: 100%">
+            <div id="charge" class="btn btn-primary">
+                <i class="ui-icon ui-icon-folder-collapsed white" style="float: right"></i>Cargar Archivo
+            </div>
+            <input id="labelFile" placeholder="Seleccionar Archivo" disabled="disabled"/>
+
+            <table class="table">
+                <thead class="head">
+                    <!--append String head-->
+                </thead>
+            </table>
+            <div style="height: 300px; overflow: auto;">
+                <table class="table table-striped">
+                    <tbody>
+                        <!--append String-->
+                    </tbody>
+                </table>
+            </div>
+            <hr/>
+            <div id="hiden" class="footer" style="display: none">
+                <label>Válor para K:</label>
+                <input id="spinner" style="width: 35px" disabled="disabled"/>
+                <button id="wilson" class="btn btn-primary">Aplicar Wilson</button>
+            </div>
+        </div>
+        <div id="secondary">
+            <table class="table">
+                <thead class="head">
+                    <!--append String head-->
+                </thead>
+            </table>
+            <div style="height: 300px; overflow: auto;">
+                <table class="table table-striped">
+                    <tbody>
+                        <!--append String-->
+                    </tbody>
+                </table>
+            </div>
+            <div  class="footer">
+                <hr/>
+                <button id="return" class="btn btn-warning">regresar</button>
+                <button id="save" class="btn btn-warning">guardar</button>
+            </div>
+        </div>
+    </body>
+</html>
